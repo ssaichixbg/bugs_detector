@@ -40,7 +40,7 @@ def get_count(request):
         for chunk in f.chunks():
             destination.write(chunk)
 
-    output = commands.getoutput('%s %s' % (exe_path, path))
+    output = commands.getoutput('%s %s' % (exe_path, os.path.join(path, file_name)))
     count = int(output)
 
-    return render_to_response('result.html')
+    return render_to_response('result.html', locals())
