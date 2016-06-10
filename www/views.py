@@ -2,7 +2,7 @@
 import json
 import time
 import os
-import commands
+import subprocess
 from PIL import  Image
 
 from django.shortcuts import render, render_to_response
@@ -48,7 +48,15 @@ def get_count(request):
     out = img.resize((x_s, y_s), Image.ANTIALIAS)
     out.save(os.path.join(path, file_name))
 
-    output = commands.getoutput('%s %s' % (exe_path, os.path.join(path, file_name)))
-    count = int(output)
+    cmd = '%s %s' % (exe_path, os.path.join(path, file_name))
+    #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    output =''
+    try:
+        subprocess.check_output(cmd)
+    except subprocess.CalledProcessError, e:
+        output = e.output
+    count = output
+    print cmd
+    print count
 
     return render_to_response('result.html', locals())
