@@ -3,6 +3,7 @@ import json
 import time
 import os
 import commands
+from PIL import  Image
 
 from django.shortcuts import render, render_to_response
 from django.http.response import *
@@ -39,6 +40,13 @@ def get_count(request):
     with open(os.path.join(path, file_name), 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+
+    img = Image.open(os.path.join(path, file_name))
+    (x, y) = img.size
+    x_s = 1000
+    y_s = y * x_s / x
+    out = img.resize((x_s, y_s), Image.ANTIALIAS)
+    out.save(os.path.join(path, file_name))
 
     output = commands.getoutput('%s %s' % (exe_path, os.path.join(path, file_name)))
     count = int(output)
