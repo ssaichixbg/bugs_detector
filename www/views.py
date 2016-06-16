@@ -8,7 +8,7 @@ from PIL import  Image
 from django.shortcuts import render, render_to_response
 from django.http.response import *
 from wechat_sdk import WechatConf
-from wechat_sdk import WechatBasic
+#from wechat_sdk import WechatBasic
 
 from .sign import Sign
 #from .wxconf import conf
