@@ -4,10 +4,47 @@
     <meta charset="UTF-8">
     <title>昆虫检测首页</title>
 </head>
+<style>
+    body {
+        background-color: #ededed;
+        margin: 0;
+    }
+    img.header {
+        width: 100%;
+
+    }
+    .row {
+        margin: 10px auto;
+        width: 80%;
+
+    }
+    .row .left {
+        margin-right: 5%;
+    }
+    .row img {
+        width: 42%;
+        border-color: #999999;
+        border-width: 1px;
+        border-radius: 3px;
+        border-style: solid;
+    }
+    .row .right {
+        margin-left: 5%;
+    }
+
+</style>
 <body>
-    <form enctype="multipart/form-data" method="POST" action="/get_count">
-        <input type="file" name="pic" />
-        <input type="submit" value="上传图片" />
-    </form>
+    <img class="header" src="/static/images/homeheader.png">
+    <div class="row">
+        <a class="left" href="#"><img src="/static/images/bugcal.png"></a>
+        <a class="right"><img src="/static/images/bugrecog.png"></a>
+    </div>
+    <div class="row">
+        <a class="left"><img src="/static/images/order.png"></a>
+        <a class="right"><img src="/static/images/contact.png"></a>
+    </div>
 </body>
-</html>pic
+<script>
+
+</script>
+</html>
