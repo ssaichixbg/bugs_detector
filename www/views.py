@@ -29,7 +29,7 @@ def home(request):
 def detect(request):
     wx = generate_js_sign(request.get_full_path())
 
-    return render_to_response('detect.html')
+    return render_to_response('detect.html', locals())
 
 def get_count(request):
     mid = request.get('media_id')
