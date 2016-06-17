@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
    
     url(r'^get_count', 'www.views.get_count'),
+    url(r'^detect', 'www.views.detect'),
     url(r'^$', 'www.views.home'),
     # url(r'^admin/', include(admin.site.urls)),
 ) + static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

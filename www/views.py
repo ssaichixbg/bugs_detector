@@ -2,16 +2,16 @@
 import json
 import time
 import os
+import urllib
 import subprocess
 from PIL import  Image
 
 from django.shortcuts import render, render_to_response
 from django.http.response import *
-#from wechat_sdk import WechatConf
-#from wechat_sdk import WechatBasic
 
-from .sign import Sign
-#from .wxconf import conf
+
+from .sign import generate_js_signature, get_token
+from .wxconf import conf
 
 # Create your views here.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -19,23 +19,30 @@ exe_path = os.path.join(BASE_DIR, 'bugs.exe')
 
 
 def generate_js_sign(url):
-    wechat = WechatBasic(conf=conf)
-    return Sign(wechat.get_jsapi_ticket(), url).sign()
+    return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
+
 
 def home(request):
-    #generate_js_sign(request.get_full_path())
     return render_to_response('index.html')
 
+
+def detect(request):
+    wx = generate_js_sign(request.get_full_path())
+
+    return render_to_response('detect.html')
+
 def get_count(request):
-    f = request.FILES.get('pic')
+    mid = request.get('media_id')
+
+    url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s' %(get_token(conf['appid'],conf['appsecret']) ,mid)
+
+
     path = os.path.join(BASE_DIR, 'static')
     if not os.path.exists(path):
         os.makedirs(path)
     file_name = '%d.jpg' % int(time.time())
 
-    with open(os.path.join(path, file_name), 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+    urllib.urlretrieve(url, file_name)
 
     img = Image.open(os.path.join(path, file_name))
     (x, y) = img.size
@@ -55,4 +62,4 @@ def get_count(request):
     print cmd
     print count
 
-    return render_to_response('result.html', locals())
+    return HttpResponse(count)

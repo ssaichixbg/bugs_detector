@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>昆虫检测</title>
+    <link rel="stylesheet" href="/static/weui.min.css">
+</head>
+<body>
+<img src="" id="preview">
+<div style="width: 200px;margin: auto">
+<a href="#" class="weui_btn weui_btn_plain_default">选择图片</a>
+<a href="#" class="weui_btn weui_btn_plain_primary">上传</a>
+</div>
+<div class="weui_cells">
+   <div class="weui_cell">
+       <div class="weui_cell_bd weui_cell_primary">
+           <p>昆虫数量</p>
+       </div>
+       <div class="weui_cell_ft" id="count">
+           待检测
+       </div>
+   </div>
+</div>
+
+
+
+<div id="loadingToast" class="weui_loading_toast" style="display:none;">
+   <div class="weui_mask_transparent"></div>
+   <div class="weui_toast">
+       <div class="weui_loading">
+           <!-- :) -->
+           <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+           <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+       </div>
+       <p class="weui_toast_content" id="prompt" >上传中...</p>
+   </div>
+</div>
+
+</body>
+
+<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="//cdn.bootcss.com/zepto/1.1.6/zepto.min.js"></script>
+<script>
+    wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "{{ request.wx.appId }}", // 必填，公众号的唯一标识
+            timestamp: "{{ request.wx.timestamp }}", // 必填，生成签名的时间戳
+            nonceStr: "{{ request.wx.nonceStr }}", // 必填，生成签名的随机串
+            signature: "{{ request.wx.signature }}",// 必填，签名，见附录1
+            jsApiList: [
+                    "closeWindow",
+                    "hideOptionMenu",
+                    "chooseImage",
+                    "uploadImage",
+                    "downloadImage"
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+     });
+    var imageID='';
+
+    function chooseImage(){
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有'original',
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                imageID = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $('#preview').attr('src',imageID);
+            }
+        });
+    }
+    function uploadImage(){
+        $('#loadingToast').css('display','');
+        $('#prompt').html('上传中...');
+        wx.uploadImage({
+            localId: imageID, // 需要上传的图片的本地ID，由chooseImage接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var serverId = res.serverId; // 返回图片的服务器端ID
+                $('#prompt').html('上传成功，检测中...');
+                $.get(
+                    '/get_count',
+                    {'media_id':serverId},
+                    function(response){
+                        $('loadingToast').css('display','none');
+                        $('#count').html(response);
+                    }
+                )
+
+            }
+        });
+    }
+</script>
+</html>

@@ -2,28 +2,56 @@ import time
 import random
 import string
 import hashlib
+import urllib2
+import re
 
-class Sign:
-    def __init__(self, jsapi_ticket, url):
-        self.ret = {
-            'nonceStr': self.__create_nonce_str(),
-            'jsapi_ticket': jsapi_ticket,
-            'timestamp': self.__create_timestamp(),
-            'url': url
-        }
+def generate_js_signature(appid, appsecret,url, noncestr):
+    import time
 
-    def __create_nonce_str(self):
-        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
+    # get jsapi_ticket
+    token = get_token(appid, appsecret)
+    ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%(token)s&type=jsapi'\
+          % {'token': token}
+    try:
+        result = urllib2.urlopen(ticket_url, timeout=20).read()
+    except:
+        return None
+    result = re.findall('"ticket":"(.*?)"', result)
+    jsapi_ticket = result[0]
 
-    def __create_timestamp(self):
-        return int(time.time())
+    timestamp = int(time.time())
+    sign = 'jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s' \
+            %(jsapi_ticket,noncestr,timestamp,url)
+    sha1result = hashlib.sha1()
+    sha1result.update(sign)
+    sign = sha1result.hexdigest()
 
-    def sign(self):
-        string = '&'.join(['%s=%s' % (key.lower(), self.ret[key]) for key in sorted(self.ret)])
-        print string
-        self.ret['signature'] = hashlib.sha1(string).hexdigest()
-        return self.ret
+    return {
+        'appId':appid,
+        'timestamp':timestamp,
+        'nonceStr':noncestr,
+        'signature':sign,
+        'url':url
+    }
 
-if __name__ == '__main__':
-    sign = Sign('jsapi_ticket', 'http://example.com')
-    print sign.sign()
+def get_token(appid, appsecret):
+    """
+    Get AccessToken by appid and appsecret.The result will be saved in cache for 7000s
+    :param appid:
+    :param appsecret:
+    :return: AccessToekn.
+    """
+    import time
+
+
+    url = """https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%(appid)s&secret=%(appsecret)s""" \
+        % {'appid': appid, 'appsecret': appsecret}
+    result = ''
+    try:
+        result = urllib2.urlopen(url, timeout=20).read()
+    except:
+        return None
+    result = re.findall('"access_token":"(.*?)"', result)
+
+    return result[0]
+
