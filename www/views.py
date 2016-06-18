@@ -30,7 +30,7 @@ def wx_js_sign(f):
 
 @wx_js_sign
 def home(request):
-    return render_to_response('index.html')
+    return render_to_response('index.html', locals())
 
 @wx_js_sign
 def detect(request):
