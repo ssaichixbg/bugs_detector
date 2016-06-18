@@ -37,7 +37,7 @@ def detect(request):
     return render_to_response('detect.html', locals())
 
 def get_count(request):
-    mid = request.get('media_id')
+    mid = request.GET.get('media_id')
 
     url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s' %(get_token(conf['appid'],conf['appsecret']) ,mid)
 
