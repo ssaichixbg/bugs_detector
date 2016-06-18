@@ -4,7 +4,7 @@ import time
 import os
 import urllib
 import subprocess
-from PIL import  Image
+from PIL import Image
 
 from django.shortcuts import render, render_to_response
 from django.http.response import *
@@ -16,7 +16,7 @@ from .wxconf import conf
 # Create your views here.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 exe_path = os.path.join(BASE_DIR, 'bugs.exe')
-
+BASE_HOST = 'http://text.chalaoshi.cn'
 
 def generate_js_sign(url):
     return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
@@ -27,7 +27,7 @@ def home(request):
 
 
 def detect(request):
-    request.wx = generate_js_sign(request.build_absolute_uri())
+    request.wx = generate_js_sign(BASE_HOST + request.get_full_path())
 
     return render_to_response('detect.html', locals())
 
