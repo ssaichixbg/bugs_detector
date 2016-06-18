@@ -49,12 +49,12 @@ def get_count(request):
 
     urllib.urlretrieve(url, os.path.join(path, file_name))
 
-    img = Image.open(os.path.join(path, file_name))
-    (x, y) = img.size
-    x_s = 1000
-    y_s = y * x_s / x
-    out = img.resize((x_s, y_s), Image.ANTIALIAS)
-    out.save(os.path.join(path, file_name))
+    # img = Image.open(os.path.join(path, file_name))
+    # (x, y) = img.size
+    # x_s = 1000
+    # y_s = y * x_s / x
+    # out = img.resize((x_s, y_s), Image.ANTIALIAS)
+    # out.save(os.path.join(path, file_name))
 
     cmd = '%s %s' % (exe_path, os.path.join(path, file_name))
     #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)
