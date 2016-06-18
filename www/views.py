@@ -21,14 +21,19 @@ BASE_HOST = 'http://test.chalaoshi.cn'
 def generate_js_sign(url):
     return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
 
+def wx_js_sign(f):
+    def wrap(request):
+        request.wx = generate_js_sign(BASE_HOST + request.get_full_path())
+        f(request)
 
+    return wrap
+
+@wx_js_sign
 def home(request):
     return render_to_response('index.html')
 
-
+@wx_js_sign
 def detect(request):
-    request.wx = generate_js_sign(BASE_HOST + request.get_full_path())
-
     return render_to_response('detect.html', locals())
 
 def get_count(request):
