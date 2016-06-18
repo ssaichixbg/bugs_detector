@@ -37,14 +37,38 @@
     <img class="header" src="/static/images/homeheader.png">
     <div class="row">
         <a class="left" href="/detect"><img src="/static/images/bugcal.png"></a>
-        <a class="right"><img src="/static/images/bugrecog.png"></a>
+        <a class="right" href="http://mp.weixin.qq.com/bizmall/malldetail?id=&pid=pdJnJjvfh2bybMhyU-0yliTYx_0Y&biz=MjM5NTU3NjY5Mg==&scene=&action=show_detail&showwxpaytitle=1#wechat_redirect"><img src="/static/images/bugrecog.png"></a>
     </div>
     <div class="row">
-        <a class="left"><img src="/static/images/order.png"></a>
-        <a class="right"><img src="/static/images/contact.png"></a>
+        <a class="left" href="http://mp.weixin.qq.com/bizmall/mallshelf?id=&t=mall/list&biz=MjM5NTU3NjY5Mg==&shelf_id=1&showwxpaytitle=1#wechat_redirect"><img src="/static/images/order.png"></a>
+        <a class="right" href="#" onclick="contact();"><img src="/static/images/contact.png"></a>
     </div>
 </body>
 <script>
+    wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "{{ request.wx.appId }}", // 必填，公众号的唯一标识
+            timestamp: "{{ request.wx.timestamp }}", // 必填，生成签名的时间戳
+            nonceStr: "{{ request.wx.nonceStr }}", // 必填，生成签名的随机串
+            signature: "{{ request.wx.signature }}",// 必填，签名，见附录1
+            jsApiList: [
+                    "closeWindow",
+                    "hideOptionMenu",
+                    "chooseImage",
+                    "uploadImage",
+                    "downloadImage"
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+     });
 
+    wx.ready(function(){
+       wx.hideOptionMenu();
+    });
+
+    function contact() {
+        var result = confirm("在公众中直接回复消息，就可以联系客服了哦~ \n点击确定返回");
+        if (result) {
+            wx.closeWindow();
+        }
+    }
 </script>
 </html>
