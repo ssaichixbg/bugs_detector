@@ -101,14 +101,18 @@
             success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
                 $('#prompt').html('上传成功，检测中...');
-                $.get(
-                        '/get_count',
-                        {'media_id': serverId},
-                        function (response) {
+                $.ajax({
+                        type: 'GET',
+                        url: '/get_count',
+                        data:{'media_id': serverId},
+                        success:function (response) {
                             $('loadingToast').css('display', 'none');
                             $('#count').html(response);
-                        }
-                )
+                        },
+                        error: function(xhr, type){
+                            alert(xhr)
+                          }
+            })
 
             }
         });
