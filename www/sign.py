@@ -8,6 +8,7 @@ import re
 def generate_js_signature(appid, appsecret,url, noncestr):
     import time
 
+    print appid, appsecret,url,noncestr
     # get jsapi_ticket
     token = get_token(appid, appsecret)
     ticket_url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%(token)s&type=jsapi'\
