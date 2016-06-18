@@ -79,6 +79,10 @@
         });
     }
     function uploadImage(){
+        if (imageID == '') {
+            alert("还没有选择图片");
+            return;
+        }
         $('#loadingToast').css('display','');
         $('#prompt').html('上传中...');
         wx.uploadImage({
