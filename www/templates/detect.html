@@ -106,7 +106,7 @@
                         url: '/get_count',
                         data:{'media_id': serverId},
                         success:function (response) {
-                            $('loadingToast').css('display', 'none');
+                            $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
                         },
                         error: function(xhr, type){
