@@ -16,7 +16,7 @@ from .wxconf import conf
 # Create your views here.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 exe_path = os.path.join(BASE_DIR, 'bugs.exe')
-BASE_HOST = 'http://text.chalaoshi.cn'
+BASE_HOST = 'http://test.chalaoshi.cn'
 
 def generate_js_sign(url):
     return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
