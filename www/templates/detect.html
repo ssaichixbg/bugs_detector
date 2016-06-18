@@ -93,13 +93,13 @@
             alert("还没有选择图片");
             return;
         }
-        $('#loadingToast').css('display', '');
-        $('#prompt').html('上传中...');
+
         wx.uploadImage({
             localId: imageID, // 需要上传的图片的本地ID，由chooseImage接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
+                $('#loadingToast').css('display', '');
                 $('#prompt').html('上传成功，检测中...');
                 $.ajax({
                         type: 'GET',
