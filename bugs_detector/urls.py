@@ -13,6 +13,7 @@ urlpatterns = patterns('',
    
     url(r'^get_count', 'www.views.get_count'),
     url(r'^detect', 'www.views.detect'),
+    url(r'^wx_callback', 'www.views.wx_callback'),
     url(r'^$', 'www.views.home'),
     # url(r'^admin/', include(admin.site.urls)),
 ) + static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

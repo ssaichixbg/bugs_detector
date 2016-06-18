@@ -3,6 +3,8 @@ import json
 import time
 import os
 import urllib
+import urllib2
+import json
 import subprocess
 from PIL import Image
 
@@ -30,11 +32,62 @@ def wx_js_sign(f):
 
 @wx_js_sign
 def home(request):
+    cookies = request.COOKIES
+    if not 'openid' in cookies:
+        url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' \
+              'appid=%s&' \
+              'redirect_uri=%s&' \
+              'response_type=code&' \
+              'scope=snsapi_userinfo&' \
+              'state=STATE#wechat_redirect'
+        url = url % (
+            conf['appid'],
+            urllib.quote(BASE_HOST + '/wx_callback'),
+
+        )
+        return HttpResponseRedirect(url)
+
     return render_to_response('index.html', locals())
 
 @wx_js_sign
 def detect(request):
     return render_to_response('detect.html', locals())
+
+def wx_callback(request):
+    code = request.GET('code','')
+    url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&' \
+          'secret=%s&' \
+          'code=%s&' \
+          'grant_type=authorization_code'
+    url = url % (
+        conf['appid'],
+        conf['appsecret'],
+        conf['code'],
+    )
+
+    dic = json.loads(urllib2.urlopen(url).read())
+    openid = dic['openid']
+    access_token = dic['access_token']
+    refresh_token = dic['refresh_token']
+
+    url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&' \
+          'openid=%s' \
+          '&lang=zh_CN'
+    url = url % (
+        access_token,
+        openid
+    )
+    dic = json.loads(urllib2.urlopen(url).read())
+
+    response = HttpResponseRedirect('/')
+    response.set_cookie('openid', openid, expires=3600*1000)
+    response.set_cookie('nickname', dic['nickname'], expires=3600*1000)
+    response.set_cookie('sex', dic['sex'], expires=3600*1000)
+    response.set_cookie('headimgurl', dic['headimgurl'], expires=3600*1000)
+    response.set_cookie('nickname', dic['nickname'], expires=3600*1000)
+
+    print openid, dic['nickname']
+    return response
 
 def get_count(request):
     mid = request.GET.get('media_id')
