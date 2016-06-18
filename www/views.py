@@ -62,7 +62,7 @@ def wx_callback(request):
     url = url % (
         conf['appid'],
         conf['appsecret'],
-        conf['code'],
+        code,
     )
 
     dic = json.loads(urllib2.urlopen(url).read())
