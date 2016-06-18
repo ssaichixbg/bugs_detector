@@ -27,7 +27,7 @@ def home(request):
 
 
 def detect(request):
-    request.wx = generate_js_sign(request.get_full_path())
+    request.wx = generate_js_sign(request.build_absolute_uri())
 
     return render_to_response('detect.html', locals())
 
