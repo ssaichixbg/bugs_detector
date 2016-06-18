@@ -24,7 +24,7 @@ def generate_js_sign(url):
 def wx_js_sign(f):
     def wrap(request):
         request.wx = generate_js_sign(BASE_HOST + request.get_full_path())
-        f(request)
+        return f(request)
 
     return wrap
 
