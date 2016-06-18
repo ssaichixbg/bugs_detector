@@ -45,7 +45,7 @@ def home(request):
             urllib.quote(BASE_HOST + '/wx_callback'),
 
         )
-        return HttpResponseRedirect(url)
+        #return HttpResponseRedirect(url)
 
     return render_to_response('index.html', locals())
 
