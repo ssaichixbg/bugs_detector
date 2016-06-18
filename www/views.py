@@ -42,7 +42,7 @@ def get_count(request):
         os.makedirs(path)
     file_name = '%d.jpg' % int(time.time())
 
-    urllib.urlretrieve(url, file_name)
+    urllib.urlretrieve(url, os.path.join(path, file_name))
 
     img = Image.open(os.path.join(path, file_name))
     (x, y) = img.size
