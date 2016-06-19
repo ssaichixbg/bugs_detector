@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>昆虫检测首页</title>
+    <title>虫控助手</title>
     <meta name="viewport" content="width=device-width,
             initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
             user-scalable=no">
@@ -18,30 +18,67 @@
         width: 100%;
 
     }
-
+    .title {
+        background-color: #00a0ea;
+        height: 40px;
+        margin-bottom: 3px;
+    }
+    .title img {
+        margin: auto;
+        display: block;
+        padding-top: 9px;
+        height: 25px;
+    }
+    .title p{
+        position: absolute;
+        left: 10px;
+        height: 40px;
+        line-height: 40px;
+        margin-left: 10px;
+        color: #eeeeee;
+        font-size: 13px;
+    }
+    .title p img {
+        display: inline-block;
+        height: 20px;
+    }
     .row {
         margin: 10px auto;
         width: 80%;
+        display: flex;
+        display: -webkit-flex;
 
     }
 
     .row .left {
+        margin-right: 3.5%;
     }
 
+    .row a {
+        display: block;
+        -webkit-flex: 1;
+        flex: 1;
+        background-color: #fff;
+    }
     .row img {
-        width: 45%;
-        border-color: #999999;
+        width: 100%;
+        border-color: #d7d7d7;
         border-width: 1px;
         border-radius: 3px;
         border-style: solid;
+        display: block;
     }
 
     .row .right {
-        margin-left: 5%;
+        margin-left: 3.5%;
     }
 
 </style>
 <body>
+<div class="title">
+    <p><img src="/static/images/user.png"> {{ cookies.nickname }}</p>
+    <img src="/static/images/title.png">
+</div>
 <img class="header" src="/static/images/homeheader.png">
 
 <div class="row">
@@ -56,10 +93,6 @@
             src="/static/images/order.png"></a>
     <a class="right" href="#" onclick="$('#dialog').css('display', '');"><img src="/static/images/contact.png"></a>
 </div>
- <div class="weui_text_area">
-       <h2 class="weui_msg_title">用户名</h2>
-       <p class="weui_msg_desc">{{ cookies.nickname }}</p>
-   </div>
 <div class="weui_dialog_confirm" id="dialog" style="display: none;">
     <div class="weui_mask"></div>
     <div class="weui_dialog">
