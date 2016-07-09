@@ -18,7 +18,7 @@ from .wxconf import conf
 # Create your views here.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 exe_path = os.path.join(BASE_DIR, 'bugs.exe')
-BASE_HOST = 'http://test.chalaoshi.cn'
+BASE_HOST = 'http://wx.88039986.cn'
 
 def generate_js_sign(url):
     return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
@@ -102,12 +102,18 @@ def get_count(request):
 
     urllib.urlretrieve(url, os.path.join(path, file_name))
 
-    # img = Image.open(os.path.join(path, file_name))
-    # (x, y) = img.size
-    # x_s = 1000
-    # y_s = y * x_s / x
-    # out = img.resize((x_s, y_s), Image.ANTIALIAS)
-    # out.save(os.path.join(path, file_name))
+    img = Image.open(os.path.join(path, file_name))
+
+    (w, h) = img.size
+    x = request.GET.get('x', '0')
+    y = request.GET.get('y', '0')
+    width = request.GET.get('width',w)
+    height = request.GET.get('height',h)
+    region = (int(x),int(y),int(width),int(height))
+    print 'crop', region
+    cropImg = img.crop(region)
+
+    cropImg.save(os.path.join(path, file_name))
 
     cmd = '%s %s' % (exe_path, os.path.join(path, file_name))
     #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)

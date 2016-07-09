@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>昆虫检测</title>
     <link rel="stylesheet" href="/static/weui.min.css">
+    <link rel="stylesheet" href="/static/crop.css">
     <meta name="viewport" content="width=device-width,
             initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
             user-scalable=no">
@@ -12,6 +13,7 @@
     img {
         margin: 10px auto;
         width: 80%;
+        max-width: 100%;
         display: block;
     }
 </style>
@@ -77,7 +79,7 @@
         ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     var imageID = '';
-
+    var cropper;
     function chooseImage() {
         wx.chooseImage({
             count: 1, // 默认9
@@ -86,6 +88,20 @@
             success: function (res) {
                 imageID = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 $('#preview').attr('src', imageID);
+                var image = document.getElementById('preview');
+                cropper = new Cropper(image, {
+                    rotatable: false,
+                    scalable: false,
+                    crop: function(e) {
+                        console.log(e.detail.x);
+                        console.log(e.detail.y);
+                        console.log(e.detail.width);
+                        console.log(e.detail.height);
+                        console.log(e.detail.rotate);
+                        console.log(e.detail.scaleX);
+                        console.log(e.detail.scaleY);
+                    }
+                });
             }
         });
     }
@@ -94,18 +110,22 @@
             alert("还没有选择图片");
             return;
         }
+        var cropData = cropper.getData(true);
 
         wx.uploadImage({
             localId: imageID, // 需要上传的图片的本地ID，由chooseImage接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
+                var data = cropData;
+                data.media_id = serverId;
+
                 $('#loadingToast').css('display', '');
                 $('#prompt').html('上传成功，检测中...');
                 $.ajax({
                         type: 'GET',
                         url: '/get_count',
-                        data:{'media_id': serverId},
+                        data: data,
                         success:function (response) {
                             $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
@@ -119,4 +139,5 @@
         });
     }
 </script>
+<script src="/static/crop.js"></script>
 </html>
