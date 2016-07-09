@@ -105,10 +105,10 @@ def get_count(request):
     img = Image.open(os.path.join(path, file_name))
 
     (w, h) = img.size
-    x = request.GET.get('x', '0')
-    y = request.GET.get('y', '0')
-    width = request.GET.get('width',w)
-    height = request.GET.get('height',h)
+    x = float(request.GET.get('x', '0'))
+    y = float(request.GET.get('y', '0'))
+    width = float(request.GET.get('width',w))
+    height = float(request.GET.get('height',h))
     region = (max(0,int(x)),max(0,int(y)),int(width),int(height))
     print 'crop', region
     cropImg = img.crop(region)
