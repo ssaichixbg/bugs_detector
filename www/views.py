@@ -109,7 +109,7 @@ def get_count(request):
     y = request.GET.get('y', '0')
     width = request.GET.get('width',w)
     height = request.GET.get('height',h)
-    region = (int(x),int(y),int(width),int(height))
+    region = (max(0,int(x)),max(0,int(y)),int(width),int(height))
     print 'crop', region
     cropImg = img.crop(region)
 
