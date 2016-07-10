@@ -141,7 +141,6 @@
                 $('#prompt').html('上传成功，检测中...');
                 $('#select-img').hide();
                 $('#upload-img').hide();
-                $('#reload').show();
                 $.ajax({
                         type: 'GET',
                         url: '/get_count',
@@ -149,9 +148,11 @@
                         success:function (response) {
                             $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
+                            $('#reload').show();
                         },
                         error: function(xhr, type){
-                            alert(xhr)
+                            alert('图片不正确，请重新上传');
+                            $('#reload').show();
                           }
             })
 
