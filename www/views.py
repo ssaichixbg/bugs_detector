@@ -45,6 +45,7 @@ def home(request):
             urllib.quote(BASE_HOST + '/wx_callback'),
 
         )
+        print url
         return HttpResponse('<script>window.location.href="%s";</script>' % url)
 
     return render_to_response('index.html', locals())
@@ -54,7 +55,7 @@ def detect(request):
     return render_to_response('detect.html', locals())
 
 def wx_callback(request):
-    code = request.GET('code','')
+    code = request.GET.get('code','')
     url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&' \
           'secret=%s&' \
           'code=%s&' \
@@ -64,8 +65,9 @@ def wx_callback(request):
         conf['appsecret'],
         code,
     )
-
-    dic = json.loads(urllib2.urlopen(url).read())
+    result = urllib2.urlopen(url).read()
+    print result
+    dic = json.loads(result)
     openid = dic['openid']
     access_token = dic['access_token']
     refresh_token = dic['refresh_token']
