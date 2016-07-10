@@ -25,6 +25,7 @@
             <p>昆虫数量</p>
         </div>
         <div class="weui_cell_ft" id="count">
+            <i class="weui_icon_success" style="display: none;"></i>
             待检测
         </div>
     </div>
@@ -149,6 +150,7 @@
                             $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
                             $('#reload').show();
+                            $('.weui_icon_success').show();
                         },
                         error: function(xhr, type){
                             alert('图片不正确，请重新上传');
