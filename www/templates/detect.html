@@ -33,11 +33,11 @@
 
 <div style="width: 200px;margin: 20px auto;">
     <a href="#" onclick="chooseImage()" class="weui_btn weui_btn_plain_default" id="select-img">选择图片</a>
-    <a href="#" onclick="uploadImage()" class="weui_btn weui_btn_primary" id="upload-img">上传</a>
+    <a href="#" onclick="uploadImage()" class="weui_btn weui_btn_primary" style="display: none;" id="upload-img">上传</a>
 </div>
 
 <div id="reload" style="width: 200px;margin: 20px auto;display: none;">
-    <a href="#" onclick="location.reload();" class="weui_btn weui_btn_warn" id="select-img">重新上传</a>
+    <a href="#" onclick="location.reload();" class="weui_btn weui_btn_warn" id="select-img">重新选择</a>
 </div>
 
 <div class="crop-container">
@@ -96,6 +96,10 @@
             success: function (res) {
                 imageID = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 $('#preview').attr('src', imageID);
+                $('#reload').show();
+                $('#upload-img').show();
+                $('#select-img').hide();
+
                 var image = document.getElementById('preview');
 
                 if ('cropper' in window) {
@@ -140,7 +144,6 @@
 
                 $('#loadingToast').css('display', '');
                 $('#prompt').html('上传成功，检测中...');
-                $('#select-img').hide();
                 $('#upload-img').hide();
                 $.ajax({
                         type: 'GET',
@@ -149,14 +152,13 @@
                         success:function (response) {
                             $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
-                            $('#reload').show();
                             $('.weui_icon_success').show();
                         },
                         error: function(xhr, type){
                             alert('图片不正确，请重新上传');
-                            $('#reload').show();
                           }
-            })
+
+                })
 
             }
         });
