@@ -99,7 +99,16 @@
                 $('#reload').show();
                 $('#upload-img').show();
                 $('#select-img').hide();
-
+                
+                if (window.wxjs_is_wkwebview !== undefined && window.wxjs_is_wkwebview) {
+                    wx.getLocalImgData({
+                        localId: imageID, // 图片的localID
+                        success: function (res) {
+                            var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                            $('#preview').attr('src', localData);
+                        }
+                    });
+                }
                 var image = document.getElementById('preview');
 
                 if ('cropper' in window) {
