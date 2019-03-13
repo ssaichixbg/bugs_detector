@@ -121,7 +121,7 @@ def get_count(request):
     #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output =''
     try:
-        print('cmd: ' + cmd)
+        print('cmd: %s' % cmd)
         output = subprocess.check_output(cmd)
     except subprocess.CalledProcessError, e:
         output = e.output
