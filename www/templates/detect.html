@@ -161,7 +161,9 @@
                         success:function (response) {
                             $('#loadingToast').css('display', 'none');
                             $('#count').html(response);
+                            $('#count').css('color', '#09bb07');
                             $('.weui_icon_success').css('display', '');
+                            $('#reload').hide();
                         },
                         error: function(xhr, type){
                             $('#loadingToast').css('display', 'none');
