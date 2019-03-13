@@ -87,7 +87,7 @@ def wx_callback(request):
     response.set_cookie('sex', dic['sex'], expires=3600*1000)
     response.set_cookie('headimgurl', dic['headimgurl'], expires=3600*1000)
 
-    print openid, dic['nickname']
+    print(openid, dic['nickname'])
     return response
 
 def get_count(request):
@@ -111,7 +111,7 @@ def get_count(request):
     width = float(request.GET.get('width',w))
     height = float(request.GET.get('height',h))
     region = (max(0,int(x)),max(0,int(y)),int(width),int(height))
-    print 'crop', region
+    print('crop', region)
     cropImg = img.crop(region)
 
     bmp_file = file_name.replace('jpg', 'bmp')
@@ -123,10 +123,10 @@ def get_count(request):
     try:
         print('cmd: %s' % cmd)
         output = subprocess.check_output(cmd)
-    except subprocess.CalledProcessError, e:
+    except subprocess.CalledProcessError as e:
         output = e.output
     count = output
-    print cmd
-    print count
+    print(cmd)
+    print(count)
 
     return HttpResponse(count)
