@@ -100,7 +100,7 @@
                 $('#upload-img').show();
                 $('#select-img').hide();
                 
-                if (window.wxjs_is_wkwebview !== undefined && window.wxjs_is_wkwebview) {
+                if (window.__wxjs_is_wkwebview) {
                     wx.getLocalImgData({
                         localId: imageID, // 图片的localID
                         success: function (res) {
