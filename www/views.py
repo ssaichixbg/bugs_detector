@@ -66,7 +66,7 @@ def wx_callback(request):
         code,
     )
     result = urllib2.urlopen(url).read()
-    print result
+    print(result)
     dic = json.loads(result)
     openid = dic['openid']
     access_token = dic['access_token']
