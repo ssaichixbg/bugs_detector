@@ -117,7 +117,7 @@ def get_count(request):
     bmp_file = file_name.replace('jpg', 'bmp')
     cropImg.save(os.path.join(path, bmp_file))
 
-    cmd = '%s %s' % (exe_path, os.path.join(path, bmp_file))
+    cmd = [exe_path, os.path.join(path, bmp_file)]
     #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output =''
     try:
