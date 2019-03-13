@@ -164,7 +164,9 @@
                             $('.weui_icon_success').show();
                         },
                         error: function(xhr, type){
+                            $('#loadingToast').css('display', 'none');
                             alert('图片不正确，请重新上传');
+                            window.location.href = window.location.href;
                           }
 
                 })
