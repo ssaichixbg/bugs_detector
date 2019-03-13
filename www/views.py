@@ -17,8 +17,8 @@ from .wxconf import conf
 
 # Create your views here.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-exe_path = os.path.join(BASE_DIR, 'bugs.exe')
-BASE_HOST = 'http://wx.88039986.cn'
+exe_path = os.path.join(BASE_DIR, 'bug')
+BASE_HOST = 'http://pest.lolibrary.cn'
 
 def generate_js_sign(url):
     return generate_js_signature(conf['appid'],conf['appsecret'],url,conf['token'])
@@ -45,7 +45,7 @@ def home(request):
             urllib.quote(BASE_HOST + '/wx_callback'),
 
         )
-        print url
+        print(url)
         return HttpResponse('<script>window.location.href="%s";</script>' % url)
 
     return render_to_response('index.html', locals())
@@ -83,10 +83,9 @@ def wx_callback(request):
 
     response = HttpResponseRedirect('/')
     response.set_cookie('openid', openid, expires=3600*1000)
-    response.set_cookie('nickname', dic['nickname'], expires=3600*1000)
+    response.set_cookie('nickname', dic['nickname'].encode('utf-8'), expires=3600*1000)
     response.set_cookie('sex', dic['sex'], expires=3600*1000)
     response.set_cookie('headimgurl', dic['headimgurl'], expires=3600*1000)
-    response.set_cookie('nickname', dic['nickname'], expires=3600*1000)
 
     print openid, dic['nickname']
     return response
@@ -115,13 +114,15 @@ def get_count(request):
     print 'crop', region
     cropImg = img.crop(region)
 
-    cropImg.save(os.path.join(path, file_name))
+    bmp_file = file_name.replace('jpg', 'bmp')
+    cropImg.save(os.path.join(path, bmp_file))
 
-    cmd = '%s %s' % (exe_path, os.path.join(path, file_name))
+    cmd = '%s %s' % (exe_path, os.path.join(path, bmp_file))
     #p=subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output =''
     try:
-        subprocess.check_output(cmd)
+        print('cmd: ' + cmd)
+        output = subprocess.check_output(cmd)
     except subprocess.CalledProcessError, e:
         output = e.output
     count = output
