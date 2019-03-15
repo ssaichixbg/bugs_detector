@@ -114,7 +114,7 @@ def get_count(request):
     y = max(0, y)
     width = width if width + x <= 1 else 1 - x
     height = height if height + y <= 1 else 1 -y
-    region = int(x * w), int(y * h), int(width * w) ,int(height * h))
+    region = int(x * w), int(y * h), int(width * w) ,int(height * h)
     print('crop', region)
     cropImg = img.crop(region)
 
