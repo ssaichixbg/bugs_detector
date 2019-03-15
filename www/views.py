@@ -106,8 +106,8 @@ def get_count(request):
     img = Image.open(os.path.join(path, file_name))
 
     (w, h) = img.size
-    x = float(request.GET.get('x', '0'))
-    y = float(request.GET.get('y', '0'))
+    x = float(request.GET.get('left', '0'))
+    y = float(request.GET.get('top', '0'))
     width = float(request.GET.get('width',w))
     height = float(request.GET.get('height',h))
     x = max(0, x)
