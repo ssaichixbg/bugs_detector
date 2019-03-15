@@ -87,7 +87,6 @@
         ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     var imageID = '';
-    var imageData;
     function chooseImage() {
         wx.chooseImage({
             count: 1, // 默认9
@@ -122,16 +121,7 @@
                     zoomable: false,
                     minContainerWidth: 0,
                     minContainerHeight: 0,
-                    //viewMode: 3,
                     crop: function(e) {
-                        var containerData = window.cropper.getContainerData();
-                        imageData = e.detail;
-                        // normalize
-                        imageData.x /= containerData.width;
-                        imageData.width /= containerData.width;
-                        imageData.y /= containerData.height;
-                        imageData.height /= containerData.height;
-                        
                         console.log(e.detail.x);
                         console.log(e.detail.y);
                         console.log(e.detail.width);
@@ -155,8 +145,15 @@
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
-                var data = imageData;
-                data.media_id = serverId;
+                var imageData = window.cropper.getImageData();
+                var cropBox = window.cropper.getCropBoxData();
+                var data = {
+                    left: cropBox.left / imageData.width,
+                    top: cropBox.top / imageData.height,
+                    width: cropBox.width / imageData.width,
+                    height: cropBox.height / imageData.height,
+                    media_id: serverId
+                };
 
                 $('#loadingToast').css('display', '');
                 $('#prompt').html('上传成功，检测中...');
