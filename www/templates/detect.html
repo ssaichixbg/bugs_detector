@@ -169,9 +169,7 @@
                             $('.weui_icon_success').css('display', '');
                             $('#reload').hide();
                             var data = getCroppedCanvas().toDataURL('image/jpeg');
-                            if ('cropper' in window) {
-                                window.cropper.destroy();
-                            }
+                            window.cropper.destroy();
                             if (data) {
                                 $('#preview').attr('src', data);
                             }
