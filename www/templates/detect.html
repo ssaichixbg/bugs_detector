@@ -114,7 +114,7 @@
                 if ('cropper' in window) {
                     window.cropper.destroy();
                 }
-
+                
                 window.cropper = new Cropper(image, {
                     rotatable: false,
                     scalable: false,
@@ -124,7 +124,14 @@
                     minContainerHeight: 0,
                     //viewMode: 3,
                     crop: function(e) {
+                        var containerData = window.cropper.getContainerData();
                         imageData = e.detail;
+                        // normalize
+                        imageData.x /= containerData.width;
+                        imageData.width /= containerData.width;
+                        imageData.y /= containerData.height;
+                        imageData.height /= containerData.height;
+                        
                         console.log(e.detail.x);
                         console.log(e.detail.y);
                         console.log(e.detail.width);
